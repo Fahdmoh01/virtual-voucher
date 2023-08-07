@@ -37,7 +37,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Event(models.Model):
     '''model For creating and storing Events'''
 
-    def generate_event_id(self):
+    def generate_event_id():
         '''generate a unique event id'''
         return f'EV{datetime.now().strftime("%Y%m%d%H%M%S%f")}'
     event_id = models.CharField(max_length=100, default=generate_event_id, unique=True)  # noqa
@@ -54,7 +54,7 @@ class Event(models.Model):
 class Voucher(models.Model):
     '''model for creating and storing Vouchers'''
 
-    def generate_voucher_id(self):
+    def generate_voucher_id():
         '''generate a unique voucher id'''
         return f'VO{datetime.now().strftime("%Y%m%d%H%M%S%f")}'
     voucher_id = models.CharField(max_length=50, default=generate_voucher_id, unique=True)  # noqa
