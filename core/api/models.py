@@ -60,8 +60,8 @@ class Voucher(models.Model):
     voucher_id = models.CharField(max_length=50, default=generate_voucher_id, unique=True)  # noqa
     event = models.ForeignKey(Event, null=True, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    # event_type = BASIC, PREMIUM, VIP
-    event_type = models.CharField(max_length=50, default="BASIC")
+    # voucher_type = BASIC, PREMIUM, VIP
+    voucher_type = models.CharField(max_length=50, default="BASIC")
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -78,11 +78,11 @@ class EventVoucher(models.Model):
 
     def is_redeemed(self) -> bool:
         '''For checking if a voucher has been redeemed already - returns True or False'''
-        if self.voucher.event_type == "BASIC" and self.is_redeemed >= 1:
+        if self.voucher.voucher_type == "BASIC" and self.is_redeemed >= 1:
             return True
-        elif self.voucher.event_type == "PREMIUM" and self.is_redeemed >= 2:
+        elif self.voucher.voucher_type == "PREMIUM" and self.is_redeemed >= 2:
             return True
-        elif self.voucher.event_type == "VIP" and self.is_redeemed >= 3:
+        elif self.voucher.voucher_type == "VIP" and self.is_redeemed >= 3:
             return True
         else:
             return False

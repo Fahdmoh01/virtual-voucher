@@ -1,5 +1,6 @@
 from .events import *
 from .auth import *
+from .vouchers import *
 
 
 class OverviewAPI(APIView):

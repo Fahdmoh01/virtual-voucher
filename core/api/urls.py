@@ -21,5 +21,14 @@ urlpatterns += [
     # Gets all events created by user
     path("all-events/", views.EventListAPI.as_view(), name="all_events"),
     # create, update, delete event
-    path("cud-event/", views.CUDEventAPI.as_view(), name="cud_events"),
+    path("cud-event/", views.CUDEventAPI.as_view(), name="cud_event"),
+]
+
+
+#vouchers 
+urlpatterns +=[
+    #Gets all vouchers created by user
+	path('all-vouchers/',views.VoucherListAPI.as_view(), name="all-vouchers"),
+    #create, update, delete voucher
+	path('cud-voucher/',views.CUDVoucherAPI.as_view(), name='cud_voucher'),
 ]
