@@ -76,7 +76,7 @@ class CUDVoucherAPI(APIView):
 		if voucher is not None:
 			voucher.delete()
 			return Response({
-				"message": "Event Deleted Successfully",
+				"message": "Voucher Deleted Successfully",
 			}, status=status.HTTP_200_OK)
 		else:
 			return Response({

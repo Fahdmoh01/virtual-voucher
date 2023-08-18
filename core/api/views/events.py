@@ -83,7 +83,7 @@ class CUDEventAPI(APIView):
 class AddEventParticipantAPI(APIView):
 	'''For users to register as participants of the event'''
 	
-	permission_classes = [permissions.IsAuthenticated]
+	permission_classes = (permissions.IsAuthenticated,)
 	
 	def post(self, request, *args, **kwargs):
 		'''Uses the post request to add a participant to the event'''
@@ -106,7 +106,7 @@ class AddEventParticipantAPI(APIView):
 
 class RemoveParticipant(APIView):
 	'''Used by event organizers to remove participants from events'''
-	permission_classes = [permissions.IsAuthenticated]
+	permission_classes = (permissions.IsAuthenticated,)
 
 	def delete(self, request, *args, **kwargs):
 		'''Uses delete request to remove participants from event part'''
