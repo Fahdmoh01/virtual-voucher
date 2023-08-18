@@ -6,6 +6,8 @@ from rest_framework.views import APIView
 from api.models import Event, EventVoucher, User, Voucher
 from api.serializers import VoucherSerializer
 
+
+
 class SystemStatsAPI(APIView):
 	'''For getting statis on vouchers'''
 	permission_classes = (permissions.IsAuthenticated,)
