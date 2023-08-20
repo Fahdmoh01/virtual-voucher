@@ -38,6 +38,22 @@ class AppUserOnly(object):
 	def __init__(self, original_method):
 		self.original_method = original_method
 
+
+	def __call__(self, request, *args, **kwargs):
+		if (request.user.is_authenticated) and (request.user.role == "APP_USER"):
+			return self.original_method(request, *args, **kwargs)
+		else:
+			return Response({
+				"message": "Access Denied!"
+			}, status=status.HTTP_403_FORBIDDEN)
+	
+
+class AdminOnly(object):
+	'''Decorator to check if logged-in user is an admin'''
+
+	def __init__(self, original_method):
+		self.original_method = original_method
+
 	def __call__(self, request, *args, **kwargs):
 		if request.user.is_authenticated:
 			if request.user.is_staff: #noqa
@@ -45,9 +61,8 @@ class AppUserOnly(object):
 			else:
 				return Response({
 					"message": "Access Denied!"
-				}, status= status.HTTP_403_FORBIDDEN)
+				}, status=status.HTTP_403_FORBIDDEN)
 		else:
 			return Response({
 				"message": "Access Denied!"
-			}, status=status.HTTP_403_FORBIDDEN)
-
+			}, status= status.HTTP_403_FORBIDDEN)
