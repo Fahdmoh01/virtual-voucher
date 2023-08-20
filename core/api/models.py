@@ -75,6 +75,7 @@ class EventVoucher(models.Model):
     times_redeemed = models.IntegerField(default=0)
     redeemed_at = models.DateTimeField(auto_now_add=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name="event_organizer") # noqa
 
     def is_redeemed(self) -> bool:
         '''For checking if a voucher has been redeemed already - returns True or False'''

@@ -8,12 +8,15 @@ from rest_framework.views import APIView
 
 from api.models import Event,User
 from api.serializers import EventsSerializer
+from django.utils.decorators import method_decorator
+from core.utils.decorators import OrganizerOnly, AppUserOnly
 
 
 class EventListAPI(APIView):
 	'''For getting all events created by the requester'''
 	permission_classes = (permissions.IsAuthenticated,)
 
+	@method_decorator(OrganizerOnly)
 	def get(self, request, *args, **kwargs):
 		'''Uses get request to fetch all events created by the user'''
 		user = request.user
@@ -28,6 +31,7 @@ class CUDEventAPI(APIView):
 	'''For Create, Update, Delete of events'''
 	permission_classes = (permissions.IsAuthenticated,)
 
+	@method_decorator(OrganizerOnly)
 	def post(self, request, *args, **kwargs):
 		'''Uses the post request to create a new event'''
 		user = request.user
@@ -42,7 +46,8 @@ class CUDEventAPI(APIView):
 		return Response({
 			"event": serializer.data
 		}, status=status.HTTP_201_CREATED)
-
+	
+	@method_decorator(OrganizerOnly)
 	def put(self, request, *args, **kwargs):
 		'''Uses the put request to update existing event'''
 		user = request.user
@@ -62,7 +67,8 @@ class CUDEventAPI(APIView):
 			return Response({
 				"message": "Event Not Found"
 			}, status=status.HTTP_404_NOT_FOUND)
-
+	
+	@method_decorator(OrganizerOnly)
 	def delete(self, request, *args, **kwargs):
 		'''Uses the delete request to delete an event'''
 		user = request.user
@@ -85,6 +91,7 @@ class AddEventParticipantAPI(APIView):
 	
 	permission_classes = (permissions.IsAuthenticated,)
 	
+	@method_decorator(AppUserOnly)
 	def post(self, request, *args, **kwargs):
 		'''Uses the post request to add a participant to the event'''
 		user = request.user
@@ -108,6 +115,7 @@ class RemoveParticipant(APIView):
 	'''Used by event organizers to remove participants from events'''
 	permission_classes = (permissions.IsAuthenticated,)
 
+	@method_decorator(OrganizerOnly)
 	def delete(self, request, *args, **kwargs):
 		'''Uses delete request to remove participants from event part'''
 		event_id = request.data.get("event_id")

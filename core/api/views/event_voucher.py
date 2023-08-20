@@ -4,7 +4,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from api.models import Event, EventVoucher, User, Voucher
-from api.serializers import VoucherSerializer
+from django.utils.decorators import method_decorator
+from core.utils.decorators import OrganizerOnly, RestaurantOnly
 
 
 
@@ -12,6 +13,7 @@ class SystemStatsAPI(APIView):
 	'''For getting statis on vouchers'''
 	permission_classes = (permissions.IsAuthenticated,)
 	
+	# still thinking about this
 	def get(self, request, *args, **kwargs):
 		'''Uses get request to relevant statistics on vouchers'''
 		user = request.user
@@ -68,10 +70,17 @@ class SystemStatsAPI(APIView):
 			}
 		}
 
+		return Response({
+			"stats":res
+		},status=status.HTTP_200_OK)
+
 
 class BroadcastVoucherAPI(APIView):
 	'''Broadcast voucher to event participants'''
 
+	permission_classes = [permissions.IsAuthenticated]
+
+	@method_decorator(OrganizerOnly)
 	def post(self, request, *args, **kwargs):
 		'''Uses post request to broadcast voucher to event participants'''
 
@@ -79,7 +88,7 @@ class BroadcastVoucherAPI(APIView):
 		voucher_id = request.data.get("voucher_id")
 		event_id = request.data.get("event_id")
 
-		voucher = Voucher.objects.filter(id=voucher_id) # noqa
+		voucher = Voucher.objects.filter(voucher_id=voucher_id) # noqa
 		event = Event.objects.filter(created_by=user, id=event_id) # noqa
 
 		if(voucher is None) or (event is None):
@@ -103,6 +112,7 @@ class RedeemVoucherApI(APIView):
 
 	permission_classes = (permissions.IsAuthenticated,)
 
+	@method_decorator(RestaurantOnly)
 	def post(self, request, *args, **kwargs):
 		'''Uses post request to redeem voucher for event participant by restaurant''' # noqa
 		user = request.user 
@@ -130,6 +140,7 @@ class RevokeRedeemersVoucherAPI(APIView):
 
 	permission_classes = (permissions.IsAuthenticated,)
 
+	@method_decorator(OrganizerOnly)
 	def delete(self, request, *args, **kwargs):
 		'''Uses delete requeste to revoke participants voucher'''
 		user = request.user
