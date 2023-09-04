@@ -6,7 +6,7 @@ from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from api.models import Voucher
+from api.models import Voucher,Event
 from api.serializers import VoucherSerializer
 from django.utils.decorators import method_decorator
 from core.utils.decorators import OrganizerOnly,AppUserOnly
@@ -36,8 +36,11 @@ class CUDVoucherAPI(APIView):
 		user = request.user
 		amount = request.data.get("amount")
 		voucher_type = request.data.get("voucher_type")
+		event_id = request.data.get("event_id")
+		event = Event.objects.filter(event_id=event_id).first()
 
 		voucher = Voucher.objects.create(
+			event= event,
 			amount=amount,
 			voucher_type=voucher_type,
 			created_by = user,
@@ -52,14 +55,16 @@ class CUDVoucherAPI(APIView):
 		'''Uses the put request to update the voucher'''
 		user = request.user
 		voucher_id = request.data.get("voucher_id")
-		voucher = Voucher.objects.filter(id = voucher_id, created_by=user).first() #noqa
+		voucher = Voucher.objects.filter(voucher_id = voucher_id, created_by=user).first() #noqa
 		amount = request.data.get("amount")
 		voucher_type = request.data.get("voucher_type")
+		event_id = request.data.get("event_id")
+		event = Event.objects.filter(event_id=event_id).first()
 
-		if voucher is not None:
+		if voucher is not None and event is not None:
 			voucher.amount = amount
 			voucher.voucher_type = voucher_type
-
+			voucher.event = event
 			voucher.save()
 			serializer = VoucherSerializer(voucher, many=False)
 			return Response({
@@ -76,7 +81,7 @@ class CUDVoucherAPI(APIView):
 		'''Uses the delete request to delete an event'''
 		user = request.user
 		voucher_id = request.data.get("voucher_id")
-		voucher = Voucher.objects.filter(id=voucher_id, created_by=user).first()
+		voucher = Voucher.objects.filter(voucher_id=voucher_id, created_by=user).first()
 		if voucher is not None:
 			voucher.delete()
 			return Response({

@@ -88,8 +88,8 @@ class BroadcastVoucherAPI(APIView):
 		voucher_id = request.data.get("voucher_id")
 		event_id = request.data.get("event_id")
 
-		voucher = Voucher.objects.filter(voucher_id=voucher_id) # noqa
-		event = Event.objects.filter(created_by=user, id=event_id) # noqa
+		voucher = Voucher.objects.filter(voucher_id=voucher_id).first() # noqa
+		event = Event.objects.filter(created_by=user, event_id=event_id).first() # noqa
 
 		if(voucher is None) or (event is None):
 			return Response({
@@ -117,7 +117,7 @@ class RedeemVoucherApI(APIView):
 		'''Uses post request to redeem voucher for event participant by restaurant''' # noqa
 		user = request.user 
 		voucher_id = request.data.get("voucher_id")
-		voucher = Voucher.objects.filter(id=voucher_id).first()
+		voucher = Voucher.objects.filter(voucher_id=voucher_id).first()
 
 		redeemer_email = request.data.get("redeemer_email")
 		redeemer = User.objects.filter(email= redeemer_email)
@@ -145,7 +145,7 @@ class RevokeRedeemersVoucherAPI(APIView):
 		'''Uses delete requeste to revoke participants voucher'''
 		user = request.user
 		voucher_id = request.data.get("voucher_id")
-		voucher = Voucher.objects.filter(id=voucher_id, created_by=user).first()
+		voucher = Voucher.objects.filter(voucher_id=voucher_id, created_by=user).first()
 
 		redeemer_email = request.data.get("redeemer_email")
 		redeemer = User.objects.filter(email=redeemer_email).first()
