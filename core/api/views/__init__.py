@@ -2,6 +2,7 @@ from .events import *
 from .auth import *
 from .vouchers import *
 from .event_voucher import *
+from .wallets import *
 
 
 class OverviewAPI(APIView):

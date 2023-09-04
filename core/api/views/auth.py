@@ -41,3 +41,19 @@ class SignUpAPI(generics.GenericAPIView):
 			"token": AuthToken.objects.create(user)[1],
 		}, status=status.HTTP_201_CREATED)
 
+
+class ChangeProfileAPI(APIView):
+	'''Used to change user profile - fullname and email'''
+	permission_classes = [permissions.IsAuthenticated]
+
+	def post(self, request, *args, **kwargs):
+		user = request.user
+		fullname = request.data.get("fullname")
+		email = request.data.get("email")
+		user.fullname = fullname
+		if user.email != email:
+			user.email = email
+		user.save()
+		return Response({
+			"user": UserSerializer(user).data,
+		}, status= status.HTTP_200_OK)

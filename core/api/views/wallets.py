@@ -8,7 +8,7 @@ from api.serializers import EventsSerializer
 from django.utils.decorators import method_decorator
 from core.utils.decorators import OrganizerOnly,AppUserOnly
 
-class FundWallet(APIView):
+class FundWalletAPI(APIView):
 	'''Used to simulate user's topup of wallet'''
 	permission_classes = (permissions.IsAuthenticated,)
 	def post(self,request, *args, **kwargs):
