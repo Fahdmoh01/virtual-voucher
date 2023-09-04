@@ -35,7 +35,7 @@ class WithdrawFromWalletAPI(APIView):
 		user = request.user
 		amount = request.data.get('amount')
 		try: 
-			user.withdraq_wallet(amount)
+			user.withdraw_wallet(amount)
 		except Exception as er:
 			print(er)
 			return Response({
