@@ -65,3 +65,13 @@ class RegisterSerializer(serializers.ModelSerializer):
 			role=validated_data['role'],
 		)
 		return user
+	
+class EventVoucherSerializer(serializers.ModelSerializer):
+    voucher = VoucherSerializer()
+    redeemer = UserSerializer()
+    created_by = UserSerializer()
+
+    class Meta:
+        model = EventVoucher
+        fields = '__all__'
+

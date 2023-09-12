@@ -40,7 +40,7 @@ urlpatterns +=[
 	#revoke redeemer's ability to redeem a voucher
 	path("revoke-redeemer/", views.RevokeRedeemersVoucherAPI.as_view(), name="revoke_redeemer"),
 	#redeems user's voucher
-	path("redeem-voucher/", views.RedeemVoucherApI.as_view(), name="redeem_vouhcer"),
+	path("redeem-voucher/", views.RedeemVoucherAPI.as_view(), name="redeem_vouhcer"),
     #sends vouchers to event participant
 	path("broadcast-voucher/", views.BroadcastVoucherAPI.as_view(), name="broad_cast"),
 ]
