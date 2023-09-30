@@ -24,7 +24,7 @@ class RestaurantOnly(object):
 		self.original_method = original_method
 
 	def __call__(self, request, *args, **kwargs):
-		if(request.user.is_authententicated) and (request.user.role == "RESTAURANT"):
+		if(request.user.is_authenticated) and (request.user.role == "RESTAURANT"):
 			return self.original_method(request, *args, **kwargs)
 		else:
 			return Response({

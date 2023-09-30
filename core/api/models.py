@@ -113,11 +113,11 @@ class EventVoucher(models.Model):
 
     def is_redeemed(self) -> bool:
         '''For checking if a voucher has been redeemed already - returns True or False'''
-        if self.voucher.event_type == "SILVER" and self.times_redeemed >= 1:
+        if self.voucher.voucher_type == "SILVER" and self.times_redeemed >= 1:
             return True
-        elif self.voucher.event_type == "GOLD" and self.times_redeemed >= 2:
+        elif self.voucher.voucher_type == "GOLD" and self.times_redeemed >= 2:
             return True
-        elif self.voucher.event_type == "DIAMOND" and self.times_redeemed >= 3:
+        elif self.voucher.voucher_type == "DIAMOND" and self.times_redeemed >= 3:
             return True
         else:
             return False
